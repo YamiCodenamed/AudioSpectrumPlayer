@@ -1,0 +1,265 @@
+﻿<UserControl x:Class="AudioSpectrumPlayer.AudioPlayer"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:converters="clr-namespace:AudioSpectrumPlayer"
+             xmlns:audion="clr-namespace:Audion.Visualization;assembly=Audion"
+             mc:Ignorable="d" MinHeight="125"
+             DataContext="{Binding RelativeSource={RelativeSource Self}}"
+             Width="{Binding ActualHeight, Converter={converters:RatioMaintainer1}, RelativeSource={RelativeSource Self}}"
+             Height="{Binding ActualWidth, Converter={converters:RatioMaintainer2}, RelativeSource={RelativeSource Self}}" Unloaded="audioUnloaded"
+             >
+    <UserControl.Resources>
+        <Style x:Key="PlayerSlider" TargetType="{x:Type Slider}">
+            <Setter Property="Opacity" Value="{Binding OpacityColor}"></Setter>
+            <Setter Property="Background" Value="{Binding FirstColor}"></Setter>
+            <Setter Property="Foreground" Value="{Binding SecondColor}"></Setter>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type Slider}">
+                        <Grid Background="{TemplateBinding Background}">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="5" />
+                                <RowDefinition Height="*" />
+                                <RowDefinition Height="5" />
+                            </Grid.RowDefinitions>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="5"></ColumnDefinition>
+                                <ColumnDefinition Width="*"></ColumnDefinition>
+                                <ColumnDefinition Width="5"></ColumnDefinition>
+                            </Grid.ColumnDefinitions>
+                            <Track Grid.Row="1" Grid.Column="1" x:Name="PART_Track">
+                                <Track.DecreaseRepeatButton>
+                                    <RepeatButton Command="Slider.DecreaseLarge" SnapsToDevicePixels="True" Height="3" BorderThickness="1" BorderBrush="{TemplateBinding Foreground}" Background="{TemplateBinding Foreground}" Opacity="{TemplateBinding Opacity}"></RepeatButton>
+                                </Track.DecreaseRepeatButton>
+                                <Track.Thumb>
+                                    <Thumb SnapsToDevicePixels="True" Foreground="{TemplateBinding Foreground}" Background="{TemplateBinding Background}" VerticalContentAlignment="Stretch">
+                                        <Thumb.Template>
+                                            <ControlTemplate TargetType="Thumb">
+                                                <Grid Background="Transparent" Width="6">
+                                                    <Polygon Points="0,0 0,2 2,2 2,0 0,0" Stretch="Fill" Fill="{TemplateBinding Foreground}" StrokeThickness="0"></Polygon>
+                                                </Grid>
+                                            </ControlTemplate>
+                                        </Thumb.Template>
+                                    </Thumb>
+                                </Track.Thumb>
+                                <Track.IncreaseRepeatButton>
+                                    <RepeatButton Command="Slider.IncreaseLarge" SnapsToDevicePixels="True" Height="3" BorderThickness="1" BorderBrush="{TemplateBinding Foreground}" Background="{TemplateBinding Foreground}" Opacity="{TemplateBinding Opacity}"></RepeatButton>
+                                </Track.IncreaseRepeatButton>
+                            </Track>
+                        </Grid>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style x:Key="PlayerButtonPlay" TargetType="{x:Type Button}">
+            <Setter Property="BorderThickness" Value="0"></Setter>
+            <Setter Property="Opacity" Value="{Binding OpacityColor}"></Setter>
+            <Setter Property="Background" Value="{Binding FirstColor}"></Setter>
+            <Setter Property="Foreground" Value="{Binding SecondColor}"></Setter>
+            <Setter Property="FontWeight" Value="Bold"></Setter>
+            <Setter Property="VerticalContentAlignment" Value="Center"></Setter>
+            <Setter Property="HorizontalContentAlignment" Value="Center"></Setter>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type Button}">
+                        <Grid Background="{TemplateBinding Background}">
+                            <ContentPresenter x:Name="MyContentPresenter" 
+                                          Content="{TemplateBinding Content}"
+                                          HorizontalAlignment="Center" 
+                                          VerticalAlignment="Center" />
+                            <Polygon Points="0,0 0,2 1,1 0,0" Stretch="Fill" Margin="5" Fill="{TemplateBinding Foreground}" StrokeThickness="0"></Polygon>
+                        </Grid>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Opacity" Value="1"></Setter>
+                    <Setter Property="Background" Value="{Binding SecondColor}"></Setter>
+                    <Setter Property="Foreground" Value="{Binding FirstColor}"></Setter>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+        <Style x:Key="PlayerButtonPause" TargetType="{x:Type Button}">
+            <Setter Property="BorderThickness" Value="0"></Setter>
+            <Setter Property="Opacity" Value="{Binding OpacityColor}"></Setter>
+            <Setter Property="Background" Value="{Binding FirstColor}"></Setter>
+            <Setter Property="Foreground" Value="{Binding SecondColor}"></Setter>
+            <Setter Property="FontWeight" Value="Bold"></Setter>
+            <Setter Property="VerticalContentAlignment" Value="Center"></Setter>
+            <Setter Property="HorizontalContentAlignment" Value="Center"></Setter>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type Button}">
+                        <Grid Background="{TemplateBinding Background}">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="5"></ColumnDefinition>
+                                <ColumnDefinition Width="*"></ColumnDefinition>
+                                <ColumnDefinition Width="*"></ColumnDefinition>
+                                <ColumnDefinition Width="5"></ColumnDefinition>
+                            </Grid.ColumnDefinitions>
+                            <ContentPresenter x:Name="MyContentPresenter" 
+                                          Content="{TemplateBinding Content}"
+                                          HorizontalAlignment="Center" 
+                                          VerticalAlignment="Center" />
+                            
+                            <Polygon Grid.Column="1" Points="0,0 0,2 2,2 2,0 0,0" Stretch="Fill" Fill="{TemplateBinding Foreground}" StrokeThickness="0" Margin="0,5,2.5,5"></Polygon>
+                            <Polygon Grid.Column="2" Points="0,0 0,2 2,2 2,0 0,0" Stretch="Fill" Fill="{TemplateBinding Foreground}" StrokeThickness="0" Margin="2.5,5,0,5"></Polygon>
+                        </Grid>
+                        
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Opacity" Value="1"></Setter>
+                    <Setter Property="Background" Value="{Binding SecondColor}"></Setter>
+                    <Setter Property="Foreground" Value="{Binding FirstColor}"></Setter>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+        <Style x:Key="PlayerButtonStop" TargetType="{x:Type Button}">
+            <Setter Property="BorderThickness" Value="0"></Setter>
+            <Setter Property="Opacity" Value="{Binding OpacityColor}"></Setter>
+            <Setter Property="Background" Value="{Binding FirstColor}"></Setter>
+            <Setter Property="Foreground" Value="{Binding SecondColor}"></Setter>
+            <Setter Property="FontWeight" Value="Bold"></Setter>
+            <Setter Property="VerticalContentAlignment" Value="Center"></Setter>
+            <Setter Property="HorizontalContentAlignment" Value="Center"></Setter>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type Button}">
+                        <Grid Background="{TemplateBinding Background}">
+                            <ContentPresenter x:Name="MyContentPresenter" 
+                                          Content="{TemplateBinding Content}"
+                                          HorizontalAlignment="Center" 
+                                          VerticalAlignment="Center" />
+                            <Polygon Points="0,0 0,2 2,2 2,0 0,0" Stretch="Fill" Fill="{TemplateBinding Foreground}" StrokeThickness="0" Margin="5"></Polygon>
+                        </Grid>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Opacity" Value="1"></Setter>
+                    <Setter Property="Background" Value="{Binding SecondColor}"></Setter>
+                    <Setter Property="Foreground" Value="{Binding FirstColor}"></Setter>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+        <Style x:Key="PlayerButtonPrevious" TargetType="{x:Type Button}">
+            <Setter Property="BorderThickness" Value="0"></Setter>
+            <Setter Property="Opacity" Value="{Binding OpacityColor}"></Setter>
+            <Setter Property="Background" Value="{Binding FirstColor}"></Setter>
+            <Setter Property="Foreground" Value="{Binding SecondColor}"></Setter>
+            <Setter Property="FontWeight" Value="Bold"></Setter>
+            <Setter Property="VerticalContentAlignment" Value="Center"></Setter>
+            <Setter Property="HorizontalContentAlignment" Value="Center"></Setter>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type Button}">
+                        <Grid Background="{TemplateBinding Background}">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="5"></ColumnDefinition>
+                                <ColumnDefinition Width="*"></ColumnDefinition>
+                                <ColumnDefinition Width="5*"></ColumnDefinition>
+                                <ColumnDefinition Width="5"></ColumnDefinition>
+                            </Grid.ColumnDefinitions>
+                            <ContentPresenter x:Name="MyContentPresenter" 
+                                          Content="{TemplateBinding Content}"
+                                          HorizontalAlignment="Center" 
+                                          VerticalAlignment="Center" />
+                            <Polygon Grid.Column="2" Points="0,1 2,0 2,2 0,1" Stretch="Fill" Fill="{TemplateBinding Foreground}" StrokeThickness="0" Margin="0,5,0,5"></Polygon>
+                            <Polygon Grid.Column="1" Points="0,0 0,2 2,2 2,0 0,0" Stretch="Fill" Fill="{TemplateBinding Foreground}" StrokeThickness="0" Margin="0,5,0,5"></Polygon>
+                        </Grid>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Opacity" Value="1"></Setter>
+                    <Setter Property="Background" Value="{Binding SecondColor}"></Setter>
+                    <Setter Property="Foreground" Value="{Binding FirstColor}"></Setter>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+        <Style x:Key="PlayerButtonNext" TargetType="{x:Type Button}">
+            <Setter Property="BorderThickness" Value="0"></Setter>
+            <Setter Property="Opacity" Value="{Binding OpacityColor}"></Setter>
+            <Setter Property="Background" Value="{Binding FirstColor}"></Setter>
+            <Setter Property="Foreground" Value="{Binding SecondColor}"></Setter>
+            <Setter Property="FontWeight" Value="Bold"></Setter>
+            <Setter Property="VerticalContentAlignment" Value="Center"></Setter>
+            <Setter Property="HorizontalContentAlignment" Value="Center"></Setter>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type Button}">
+                        <Grid Background="{TemplateBinding Background}">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="5"></ColumnDefinition>
+                                <ColumnDefinition Width="5*"></ColumnDefinition>
+                                <ColumnDefinition Width="*"></ColumnDefinition>
+                                <ColumnDefinition Width="5"></ColumnDefinition>
+                            </Grid.ColumnDefinitions>
+                            <ContentPresenter x:Name="MyContentPresenter" 
+                                          Content="{TemplateBinding Content}"
+                                          HorizontalAlignment="Center" 
+                                          VerticalAlignment="Center" />
+                            <Polygon Grid.Column="1" Points="0,0 0,2 1,1 0,0" Stretch="Fill" Fill="{TemplateBinding Foreground}" StrokeThickness="0" Margin="0,5,0,5"></Polygon>
+                            <Polygon Grid.Column="2" Points="0,0 0,2 2,2 2,0 0,0" Stretch="Fill" Fill="{TemplateBinding Foreground}" StrokeThickness="0" Margin="0,5,0,5"></Polygon>
+                        </Grid>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Opacity" Value="1"></Setter>
+                    <Setter Property="Background" Value="{Binding SecondColor}"></Setter>
+                    <Setter Property="Foreground" Value="{Binding FirstColor}"></Setter>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+
+    </UserControl.Resources>
+    <Grid x:Name="MainGrid">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="2*"></RowDefinition>
+            <RowDefinition Height="2*"></RowDefinition>
+            <RowDefinition Height="*"></RowDefinition>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"></ColumnDefinition>
+            <ColumnDefinition Width="4*"></ColumnDefinition>
+            <ColumnDefinition Width="4*"></ColumnDefinition>
+        </Grid.ColumnDefinitions>
+        <Rectangle HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Grid.Column="0" Grid.Row="1" Fill="Transparent" Stroke="{Binding Path=SecondColor}" StrokeThickness="1" Margin="1,1,1,1"></Rectangle>
+        <Rectangle HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Grid.Column="1" Grid.ColumnSpan="2" Grid.Row="1" Fill="Transparent" Stroke="{Binding Path=SecondColor}" StrokeThickness="1" Margin="1,1,1,1"></Rectangle>
+        <Image Visibility="Collapsed" Name="songAlbumArt" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Grid.Column="0" Grid.Row="1" Stretch="UniformToFill" Margin="2,2,2,2"></Image>
+        <Rectangle x:Name="songAlbumArtFiller" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Fill="{Binding Path=FirstColor}" Opacity="{Binding Path=OpacityColor}" Grid.Row="1" Grid.Column="0" StrokeThickness="0" Margin="2,2,2,2" AllowDrop="True"></Rectangle>
+        <Rectangle HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Fill="{Binding Path=FirstColor}" Opacity="{Binding Path=OpacityColor}" Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="2" StrokeThickness="0" Margin="2,2,2,2"></Rectangle>
+        <TextBlock HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Foreground="{Binding Path=FirstColor}" Background="{Binding Path=SecondColor}" Grid.Column="2" Grid.Row="2" x:Name="textSub" TextAlignment="Right" Padding="2,2,5,2" FontWeight="Bold" FontSize="13">Song Artist</TextBlock>
+        <TextBlock HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Foreground="{Binding Path=SecondColor}" Background="Transparent" Grid.Column="1" Grid.Row="1" Grid.ColumnSpan="2" x:Name="textMain" TextAlignment="Right" Padding="2,5,5,2" FontWeight="Bold" FontSize="25">Song Name</TextBlock>
+        <audion:SpectrumAnalyzer Name="spectrum" Grid.Column="1" Grid.Row="0" Grid.ColumnSpan="2" Background="Transparent" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" SpectrumScalingStrategy="Sqrt" FrequencyBarCount="100" FrequencyBarSpacing="2" FrequencyBarBrush="{Binding Path=SecondColor}" Margin="1,0,0,0"/>
+        <Grid Grid.Row="2" Grid.Column="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"></ColumnDefinition>
+                <ColumnDefinition Width="*"></ColumnDefinition>
+                <ColumnDefinition Width="*"></ColumnDefinition>
+                <ColumnDefinition Width="*"></ColumnDefinition>
+                <ColumnDefinition Width="*"></ColumnDefinition>
+                <ColumnDefinition Width="*"></ColumnDefinition>
+                <ColumnDefinition Width="*"></ColumnDefinition>
+                <ColumnDefinition Width="*"></ColumnDefinition>
+            </Grid.ColumnDefinitions>
+            <Button Name="buttonPlay" Style="{StaticResource PlayerButtonPlay}" Grid.Column="0" Visibility="Visible" Click="audioPlay"></Button>
+            <Button Name="buttonPause"  Style="{StaticResource PlayerButtonPause}" Grid.Column="0" Visibility="Collapsed" Click="audioPause"></Button>
+            <Button Name="buttonStop" Style="{StaticResource PlayerButtonStop}" Grid.Column="1" Click="audioStop"></Button>
+            <Button Name="buttonTrackPrevious" Style="{StaticResource PlayerButtonPrevious}" Grid.Column="2" IsEnabled="False" Click="audioTrackPrevious"></Button>
+            <Button Name="buttonTrackNext" Style="{StaticResource PlayerButtonNext}" Grid.Column="3" IsEnabled="False" Click="audioTrackNext"></Button>
+            <Slider Name="buttonVolume" Style="{StaticResource PlayerSlider}" Grid.Column="4" Grid.ColumnSpan="4" Value="50" Minimum="0" Maximum="100" ValueChanged="audioVolumChange"></Slider>
+        </Grid>
+    </Grid>
+</UserControl>
