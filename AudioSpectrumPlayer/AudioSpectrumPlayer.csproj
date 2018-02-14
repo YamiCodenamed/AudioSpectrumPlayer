@@ -60,6 +60,9 @@
     <Reference Include="PresentationFramework" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AudioPlaylist.xaml.cs">
+      <DependentUpon>AudioPlaylist.xaml</DependentUpon>
+    </Compile>
     <Compile Include="RatioMaintainer.cs" />
     <Page Include="AudioPlayer.xaml">
       <Generator>MSBuild:Compile</Generator>
@@ -69,6 +72,10 @@
       <DependentUpon>AudioPlayer.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="AudioPlaylist.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs">

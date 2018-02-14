@@ -17,3 +17,5 @@ D:\Projects\Visual Studio\AudioSpectrumPlayer\AudioSpectrumPlayer\obj\Release\Au
 D:\Projects\Visual Studio\AudioSpectrumPlayer\AudioSpectrumPlayer\obj\Release\AudioSpectrumPlayer.csproj.CoreCompileInputs.cache
 D:\Projects\Visual Studio\AudioSpectrumPlayer\AudioSpectrumPlayer\obj\Release\AudioSpectrumPlayer.dll
 D:\Projects\Visual Studio\AudioSpectrumPlayer\AudioSpectrumPlayer\obj\Release\AudioSpectrumPlayer.pdb
+D:\Projects\Visual Studio\AudioSpectrumPlayer\AudioSpectrumPlayer\obj\Release\AudioPlaylist.g.cs
+D:\Projects\Visual Studio\AudioSpectrumPlayer\AudioSpectrumPlayer\obj\Release\AudioPlaylist.baml
