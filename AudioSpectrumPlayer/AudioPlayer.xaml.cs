@@ -70,6 +70,11 @@ namespace AudioSpectrumPlayer
             spectrum.Source = currentTrack;
         }
 
+        public void adjustFrequencies(int a, int b)
+        {
+            spectrum.adjustFrequency(a, b);
+        }
+
         private void setTBS(string loadingSong)
         {
             var file = TagLib.File.Create(loadingSong);
@@ -162,17 +167,19 @@ namespace AudioSpectrumPlayer
 
         private void audioTrackPrevious(object sender, RoutedEventArgs e)
         {
-            if (Song == PlayList.First()) return;
+            var index = PlayList.IndexOf(Song);
+            if (index <= 0) return;
             audioStop(sender, e);
-            Song = PlayList[PlayList.IndexOf(Song) - 1];
+            Song = PlayList[index - 1];
             audioPlay(sender, e);
         }
 
         private void audioTrackNext(object sender, RoutedEventArgs e)
         {
-            if (Song == PlayList.Last()) return;
+            var index = PlayList.IndexOf(Song);
+            if (index >= PlayList.Count-1) return;
             audioStop(sender, e);
-            Song = PlayList[PlayList.LastIndexOf(Song) + 1];
+            Song = PlayList[index + 1];
             audioPlay(sender, e);
         }
 

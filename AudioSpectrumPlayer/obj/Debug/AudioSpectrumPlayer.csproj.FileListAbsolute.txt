@@ -30,3 +30,5 @@ D:\Projects\Visual Studio\AudioSpectrumPlayer\AudioSpectrumPlayer\obj\Debug\Audi
 D:\Projects\Visual Studio\AudioSpectrumPlayer\AudioSpectrumPlayer\obj\Debug\AudioSpectrumPlayer.csproj.CoreCompileInputs.cache
 D:\Projects\Visual Studio\AudioSpectrumPlayer\AudioSpectrumPlayer\obj\Debug\AudioSpectrumPlayer.dll
 D:\Projects\Visual Studio\AudioSpectrumPlayer\AudioSpectrumPlayer\obj\Debug\AudioSpectrumPlayer.pdb
+D:\Projects\Visual Studio\AudioSpectrumPlayer\AudioSpectrumPlayer\obj\Debug\AudioPlaylist.g.cs
+D:\Projects\Visual Studio\AudioSpectrumPlayer\AudioSpectrumPlayer\obj\Debug\AudioPlaylist.baml

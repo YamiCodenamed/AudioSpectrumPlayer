@@ -4,7 +4,7 @@
 library
 C#
 .cs
-D:\Projects\Visual Studio\AudioSpectrumPlayer\AudioSpectrumPlayer\obj\Release\
+I:\Projects\Visual Studio\AudioSpectrumPlayer\AudioSpectrumPlayer\obj\Release\
 AudioSpectrumPlayer
 none
 false
@@ -12,9 +12,9 @@ TRACE
 
 2-855375170
 1-500307282
-10808489594
-16-1398428962
+10-1201987104
+16-1871939297
 AudioPlayer.xaml;AudioPlaylist.xaml;
 
-False
+True
 

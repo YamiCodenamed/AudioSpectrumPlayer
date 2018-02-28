@@ -257,8 +257,8 @@
             <Button Name="buttonPlay" Style="{StaticResource PlayerButtonPlay}" Grid.Column="0" Visibility="Visible" Click="audioPlay"></Button>
             <Button Name="buttonPause"  Style="{StaticResource PlayerButtonPause}" Grid.Column="0" Visibility="Collapsed" Click="audioPause"></Button>
             <Button Name="buttonStop" Style="{StaticResource PlayerButtonStop}" Grid.Column="1" Click="audioStop"></Button>
-            <Button Name="buttonTrackPrevious" Style="{StaticResource PlayerButtonPrevious}" Grid.Column="2" IsEnabled="False" Click="audioTrackPrevious"></Button>
-            <Button Name="buttonTrackNext" Style="{StaticResource PlayerButtonNext}" Grid.Column="3" IsEnabled="False" Click="audioTrackNext"></Button>
+            <Button Name="buttonTrackPrevious" Style="{StaticResource PlayerButtonPrevious}" Grid.Column="2" Click="audioTrackPrevious"></Button>
+            <Button Name="buttonTrackNext" Style="{StaticResource PlayerButtonNext}" Grid.Column="3" Click="audioTrackNext"></Button>
             <Slider Name="buttonVolume" Style="{StaticResource PlayerSlider}" Grid.Column="4" Grid.ColumnSpan="4" Value="50" Minimum="0" Maximum="100" ValueChanged="audioVolumChange"></Slider>
         </Grid>
     </Grid>
